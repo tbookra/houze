@@ -1,0 +1,23 @@
+.container1{
+    margin: 7%;
+}
+
+.buttonsDiv{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;;
+}
+
+.searchDiv{
+    margin: 10px;
+    display: flex;
+    justify-content: right;
+}
+
+.serchInput{
+    width: 250px;
+}
+
+.modal_inicator{
+    cursor: pointer;
+}
