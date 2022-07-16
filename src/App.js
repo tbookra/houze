@@ -1,7 +1,6 @@
 import {BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Header from './components/Header';
 import ProductListing from './components/ProductListing';
-import FavoredProductPage from './components/FavoredProductPage'
 import ErrorPage from './components/ErrorPage'
 
 function App() {
@@ -11,7 +10,6 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element = {<ProductListing />} />
-          <Route path="/favored" element = {<FavoredProductPage />} />
           <Route path="*" element = {<ErrorPage />} />
         </Routes>
       </Router>

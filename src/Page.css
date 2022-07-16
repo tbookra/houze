@@ -8,16 +8,30 @@
     margin-bottom: 10px;;
 }
 
-.searchDiv{
-    margin: 10px;
-    display: flex;
-    justify-content: right;
+.cardEl:hover{
+    background-color: rgba(148, 186, 247,0.25);
 }
 
-.serchInput{
-    width: 250px;
+.popover{
+    background-color: black;
+    color:white;
 }
 
-.modal_inicator{
-    cursor: pointer;
+.popoverTitle{
+    background-color: grey;
+    color:white;
+}
+.overlay{
+    position:absolute;
+    z-index:1020;
+    display:block;
+    visibility:visible;
+    padding:5px;
+    font-size:11px;
+    opacity:0;
+    filter:alpha(opacity=0)
+}
+
+.overlay.top{
+    margin-top:12px
 }

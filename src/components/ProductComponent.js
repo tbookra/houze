@@ -1,62 +1,65 @@
-import React, {useEffect,useState, useRef} from 'react' 
-import { useSelector } from 'react-redux';
-import { Card, Image } from 'semantic-ui-react'
-import Favored from './Favored'
-import BeerModal from './BeerModal'
+import React from 'react'
+import {OverlayTrigger, Popover} from 'react-bootstrap';
 import '../Page.css';
 
+const createString = (arr1, title) =>{
+  let str = `${title}: `
+  for (const item of arr1){
+    str += `${item.name}, `
+  }
+  return str.slice(0, -2)
+}
 
-function ProductComponent({products,favoredMode}) {
-    const favoredProducts = useSelector((state)=>state.favored_product)
-    const renderedProducts = useRef(products)
-    const [favoredChanged, setFavoredChanged] = useState(false)
+function ProductComponent({products}) {
 
-    if(!Array.isArray(products)){
-        let productArr = []
-        for (const property in products){
-            productArr.push(products[property].product)
-      }
-      products = productArr
-      renderedProducts.current = productArr
-    }
-
-    const hasFavoredChanged = () => {
-        setFavoredChanged(prev => !prev)
-    }
-    
-    useEffect(() => {
-    renderedProducts.current = products
-       
-    },[favoredProducts,products,favoredChanged])
-
-    const renderList = (items) =>{
-        return (
-            items.map((product) => {
-                const {id, name, image_url, description} = product
-                return (
-                <Card key={id}>
-                    <BeerModal itemData={product}>
-                        <Image className='modal_inicator' src={image_url} wrapped ui={false} />
-                    </BeerModal>
-                    <Card.Content>
-                      <Card.Header>{name}</Card.Header>
-                      <Card.Description>
-                       {description}
-                      </Card.Description>
-                    </Card.Content>
-                    <Favored favoredProduct={!!favoredProducts[id]} product={product} favoredMode={favoredMode} hasFavoredChanged={hasFavoredChanged}  />
-                </Card>
-            )
-            })
-        )
-    }
+  
   return (
-    <>
-    {renderedProducts.current?.length > 0 ? <Card.Group itemsPerRow={6}> {renderList(renderedProducts.current.slice(0,6))} </Card.Group> : ""}
-    {renderedProducts.current?.length > 0 ? <Card.Group itemsPerRow={6}> {renderList(renderedProducts.current.slice(6,12))} </Card.Group> : ""}
-    {renderedProducts.current?.length > 0 ? <Card.Group itemsPerRow={6}> {renderList(renderedProducts.current.slice(12,18))} </Card.Group> : ""}
-    {renderedProducts.current?.length > 0 ? <Card.Group itemsPerRow={6}> {renderList(renderedProducts.current.slice(18,24))} </Card.Group> : ""}
-    </>
+    <div className='container' style={{"paddingTop": "160px"}} >
+      <div className='row row-cols-sm-1 row-cols-xxl-2'>
+          {products.map((product) => {
+            const {id, name, image_url, description, tagline,ingredients} = product
+            const {hops, malt} = ingredients
+            const ingredientsString1 = createString(hops, "Hops")
+            const ingredientsString2 = createString(malt, "Malt")
+            return (
+        <div  key={id} className=" d-flex align-items-stretch">
+          <div className="card mb-3 cardEl"  style={{"maxWidth": "840px"}}>
+            <div className="row g-2" >
+              <div className="col-md-2"  >
+              <OverlayTrigger
+                trigger="hover"
+                placement='top-start'
+                overlay={
+                  <Popover id={`popover-positioned-top${id}`}  >
+                    <Popover.Header  as="h3" className="popoverTitle" >Ingredients </Popover.Header>
+                    <Popover.Body>
+                      <div className="popover" >{ingredientsString1}</div>
+                      <div className="popover" >{ingredientsString2}</div>
+                    </Popover.Body>
+                  </Popover>
+                }
+              >
+                <img src={image_url} className="img-fluid align-middle pt-lg-4 ml-lg-2 pt-xl-5 ml-xl-3 pt-xm-1" alt={name} width="30%" height="auto"
+                style={{"maxHeight": "80%"}}
+                />
+                </OverlayTrigger>
+              </div>
+              <div className="col-md-10" >
+                <div className="card-body">
+                  <h5 className="card-title text-start" >{name}</h5>
+                  <h6 className="card-title text-start text-warning" >{tagline}</h6>
+                  <p className="card-text text-start" >{description.slice(0,253)}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+         </div>       
+                
+             
+            )
+          })}
+        </div>
+      </div>
   )
 }
 
